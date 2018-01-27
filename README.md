@@ -1,6 +1,4 @@
-# Spring boot base with AWS JWT security
-
-## Spring boot base with [Amazon Cognito](https://aws.amazon.com/cognito/) token based security. 
+# Spring boot base with [Amazon Cognito](https://aws.amazon.com/cognito/) token based security. 
 
 ### Includes:
 * Configured security based on AWS jwt parsing.
