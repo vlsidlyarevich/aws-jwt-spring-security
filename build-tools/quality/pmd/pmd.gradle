@@ -1,0 +1,9 @@
+apply plugin: 'pmd'
+
+pmdMain {
+    ruleSetFiles = files('build-tools/quality/pmd/pmd-ruleset.xml')
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}

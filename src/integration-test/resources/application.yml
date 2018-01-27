@@ -1,0 +1,16 @@
+test:
+  id-token:
+
+security:
+  jwt:
+    auth-header-name: Authorization
+    aws:
+      user-pool-id:
+      region:
+      cognito-identity-pool-url:
+      cognito-identity-pool-url-suffix:
+      jwkUrl:
+      user-name-field: cognito:username
+      groups-field: cognito:groups
+      connection-timeout: 2000
+      read-timeout: 2000

@@ -1,0 +1,37 @@
+import java.beans.Introspector
+
+import static java.awt.Desktop.getDesktop
+
+apply plugin: 'checkstyle'
+
+checkstyle {
+    ignoreFailures = false
+    configFile = file('build-tools/quality/checkstyle/checkstyle.xml')
+}
+
+ext.checkType = 'none'
+
+task checkstyleReport << {
+    if (file("$buildDir/reports/checkstyle/${checkType}.xml").exists()) {
+        ant.xslt(in: "$buildDir/reports/checkstyle/${checkType}.xml",
+                style: "build-tools/quality/checkstyle/checkstyle.xsl",
+                out: "$buildDir/reports/checkstyle/${checkType}.html")
+    }
+}
+
+gradle.taskGraph.afterTask { Task task, TaskState state ->
+    if (task.name.startsWith('checkstyle') && state.failure && task.hasProperty('reports')) {
+        checkType = Introspector.decapitalize(task.name.replace('checkstyle', ''))
+        checkstyleReport.execute()
+
+        def reportPath = task.reports.find { it.getName() == 'xml' }
+                .getDestination()
+                .getPath()
+                .replace('xml', 'html')
+
+        desktop?.browse file(reportPath).toURI()
+    }
+}
+
+test.dependsOn checkstyleMain
+test.dependsOn checkstyleTest

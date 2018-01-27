@@ -1,0 +1,23 @@
+apply plugin: 'findbugs'
+
+task findSecurityBugs(type: FindBugs) {
+
+    classpath = files()
+    pluginClasspath = project.configurations.findbugsPlugins
+
+    findbugs {
+        sourceSets = [sourceSets.main]
+        ignoreFailures = false
+        reportsDir = file("$project.buildDir/reports/findbugs")
+        effort = "max"
+        reportLevel = "low"
+    }
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+        html.stylesheet resources.text.fromFile('build-tools/quality/findbugs/findbugs.xsl')
+    }
+}
